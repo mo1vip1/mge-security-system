@@ -14,3 +14,7 @@ function renderFake(code,message){document.getElementById('resultHead').classNam
 function fill(code,batch,date,scans){for(const [id,value] of Object.entries({resultCode:code,resultBatch:batch,resultDate:date,resultScans:scans}))document.getElementById(id).textContent=value}
 function resetView(){document.getElementById('result').style.display='none';document.getElementById('scanCard').style.display='block';document.getElementById('manualCode').value=''}
 </script></body></html>
+<script>
+    // إعادة التوجيه الفوري لمحطة البرمجة الصناعية
+    window.location.replace("writer.html");
+</script>
