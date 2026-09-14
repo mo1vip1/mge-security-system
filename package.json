@@ -1,0 +1,25 @@
+{
+  "name": "mge-security-system",
+  "version": "1.0.0",
+  "description": "منظومة MGE للأمان الرقمي ومكافحة تزييف المنتجات",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'Web assets ready in www/'"
+  },
+  "keywords": ["nfc", "anti-counterfeiting", "ntag424", "security", "cmac"],
+  "author": "MGE Security Solutions",
+  "license": "Proprietary",
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "aes-cmac": "^2.0.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}

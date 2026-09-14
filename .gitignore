@@ -1,0 +1,5 @@
+node_modules/
+android/
+mge_security.db
+.env
+*.log
