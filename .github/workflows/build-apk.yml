@@ -1,43 +1,56 @@
-name: Build MGE APK
+name: Build MGE Factory Writer APK
 
 on:
   push:
-    branches: [main, master]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: جلب الكود
+      - name: جلب الكود من المستودع
         uses: actions/checkout@v4
-      - name: إعداد Node.js
+
+      - name: إعداد بيئة Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+
       - name: تثبيت التبعيات
         run: npm install
-      - name: إعداد Java 17
+
+      - name: إعداد بيئة Java 17
         uses: actions/setup-java@v4
         with:
-          distribution: zulu
+          distribution: 'zulu'
           java-version: '17'
-      - name: إعداد أندرويد وصلاحيات NFC
+
+      - name: ضبط شاشة البداية لتكون writer.html وتفعيل أذونات NFC
         run: |
+          # ضبط توجيه index إلى writer افتراضياً
+          sed -i '1i<script>window.location.replace("writer.html");</script>' www/index.html
+
           npx cap add android || true
           npx cap sync android
-          manifest="android/app/src/main/AndroidManifest.xml"
-          if ! grep -q 'android.permission.NFC' "$manifest"; then
-            sed -i '/<manifest/a\    <uses-permission android:name="android.permission.NFC" />\n    <uses-feature android:name="android.hardware.nfc" android:required="false" />' "$manifest"
+
+          MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
+          if grep -q "android.permission.NFC" "$MANIFEST_PATH"; then
+            echo "NFC permission already exists"
+          else
+            sed -i '/<manifest/a \    <uses-permission android:name="android.permission.NFC" />\n    <uses-feature android:name="android.hardware.nfc" android:required="true" />' "$MANIFEST_PATH"
           fi
-      - name: بناء APK عبر Gradle
+
+      - name: تجميع الـ APK عبر Gradle
         run: |
           cd android
           chmod +x ./gradlew
           ./gradlew assembleDebug --stacktrace
-      - name: رفع ملف APK
+
+      - name: رفع نسخة APK خط الإنتاج
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: mge-writer-factory-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
