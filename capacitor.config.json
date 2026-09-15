@@ -5,8 +5,7 @@
   "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https",
-    "cleartext": true,
-    "url": "writer.html"
+    "cleartext": true
   },
   "android": {
     "allowMixedContent": true,
